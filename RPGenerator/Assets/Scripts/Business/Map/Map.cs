@@ -1,5 +1,6 @@
 using Assets.Scripts.Business.Map;
 using System.Collections.Generic;
+using System.Text;
 
 public enum Theme
 {
@@ -30,4 +31,20 @@ public class Map
     public int Height { get => _height; set => _height = value; }
     public int Width { get => _width; set => _width = value; }
     public Theme Theme { get => _theme; set => _theme = value; }
+
+    public string InConsole()
+    {
+        StringBuilder stringBuilder= new StringBuilder();
+        for (int i = 0; i < Height; i++)
+        {
+            for (int j = 0; j < Width; j++)
+            {
+                stringBuilder.Append("[ ");
+                stringBuilder.Append(_squares[i,j].IsOccupied() ? "X" : "0");
+                stringBuilder.Append(" ] ");
+            }
+            stringBuilder.Append('\n');
+        }
+        return stringBuilder.ToString();
+    }
 }

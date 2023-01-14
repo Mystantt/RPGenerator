@@ -1,3 +1,5 @@
+using System;
+
 namespace Assets.Scripts.Business.Map
 {
     public class Square
@@ -12,7 +14,13 @@ namespace Assets.Scripts.Business.Map
         }
         public double GetObstructionLevel()
         {
+            if (_decorPart == null) return 0;
             return _decorPart.ObstructionLevel;
+        }
+
+        public Boolean IsOccupied()
+        {
+            return _decorPart != null;
         }
     }
 }

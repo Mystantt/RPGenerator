@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine;
 namespace Assets.Scripts.Business.Map
 {
     [CreateAssetMenu(menuName = "Decor/DecorPart", fileName = "New Decor Part")]
+    [Serializable]
     public class DecorPart : ScriptableObject
     {
         [SerializeField] private double _obstructionLevel;

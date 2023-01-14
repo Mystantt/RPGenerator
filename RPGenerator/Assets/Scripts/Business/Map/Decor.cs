@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,9 +6,10 @@ using UnityEngine;
 namespace Assets.Scripts.Business.Map
 {
     [CreateAssetMenu(menuName = "Decor/Decor", fileName = "New Decor")]
+    [Serializable]
     public class Decor : ScriptableObject
     {
-        [SerializeField] private readonly List<DecorPart> _decorParts;
+        [SerializeField] private List<DecorPart> _decorParts;
 
         public Decor(List<DecorPart> parts) { _decorParts = parts; }
 
