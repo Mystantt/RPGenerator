@@ -23,11 +23,10 @@ namespace Assets.Scripts.Business.Account
 
         public Campaign Campaign => _campaign;
 
-        public Profile(string name, GameRole role, Campaign campaign)
+        public Profile(string name, GameRole role)
         {
             Name = name;
             _role = role;
-            _campaign = campaign;
             _characters = new List<Character>();
         }
 
@@ -55,6 +54,19 @@ namespace Assets.Scripts.Business.Account
             {
                 _campaign.RemoveProfile(this);
                 _campaign = null;
+            }
+        }
+
+        public void JoinCampaign(Campaign c)
+        {
+            JoinCampaign(c, "");
+        }
+        public void JoinCampaign(Campaign c,string pwd)
+        {
+            if(_campaign == null)
+            {
+                _campaign = c;
+                c.AddProfile(this, pwd);
             }
         }
     }

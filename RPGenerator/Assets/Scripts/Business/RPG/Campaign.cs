@@ -1,4 +1,5 @@
 using Assets.Scripts.Business.Account;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,19 +7,28 @@ using UnityEngine.TextCore.Text;
 
 namespace Assets.Scripts.Business.RPG
 {
+    public enum Visibility
+    {
+        Private,Public
+    }
+    [Serializable]
     public class Campaign
     {
         private string _name;
         private string _description;
         private readonly List<Profile> _profiles;
         private readonly GameRules _rules;
+        private readonly Visibility _visibility;
         private Profile _adminProfile = null;
+        private string _password;
 
-        public Campaign(string name, string description,GameRules rules,Profile profile)
+        public Campaign(string name, string description,GameRules rules,string password,Profile profile)
         {
             _name = name;
             _description = description;
             _rules = rules;
+            _password = password;
+            _visibility= Visibility.Private;
             if(profile == null)
             {
                 _profiles = new List<Profile>();
@@ -39,6 +49,20 @@ namespace Assets.Scripts.Business.RPG
             
         }
 
+        public Campaign(string name, string description, GameRules rules, Profile profile)
+        {
+            _name = name;
+            _description = description;
+            _rules = rules;
+            _password = "";
+            _visibility = Visibility.Public;
+            _profiles = new List<Profile>();
+            if(profile != null)
+            {
+                AddProfile(profile,_password);
+            }
+
+        }
         public void ChangeName(Profile p,string newName)
         {
             if(CanAccess(p)) { 
@@ -83,14 +107,15 @@ namespace Assets.Scripts.Business.RPG
             return list; 
         }
 
-        public void AddProfile(Profile p)
+        public void AddProfile(Profile p,string pwd)
         {
-            if((_adminProfile != null && !p.HasAdminAccess())  || _adminProfile == null)
+            if(((_adminProfile != null && !p.HasAdminAccess())  || _adminProfile == null) && !_profiles.Contains(p) && _password.Equals(pwd))
             {
                 if(p.HasAdminAccess())
                 {
                     _adminProfile = p;
                 }
+                p.JoinCampaign(this);
                 _profiles.Add(p);
             }
         }
@@ -105,5 +130,7 @@ namespace Assets.Scripts.Business.RPG
         public string Description { get => _description; }
 
         public GameRules Rules => _rules;
+
+        public Visibility Visibility => _visibility;
     }
 }
